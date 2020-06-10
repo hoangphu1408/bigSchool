@@ -29,8 +29,29 @@
                    <span class="category">
                        @course.Category.Name
                    </span>
+                   <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
                </div>
            </li>
        }
    </ul>
 </div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(() => {
+            $(".js-toggle-attendance").click((e) => {
+                var button = $(e.target);
+                $.post("/api/attendances", { courseId: button.attr("data-course-id") }).done(() => {
+                    button
+                        .removeClass("btn-default")
+                        .addClass("btn-info")
+                        .text("Going")
+                })
+                .fail(() => {
+                    alert("Someting Failed !");
+                })
+            })
+        })
+    </script>    
+}
